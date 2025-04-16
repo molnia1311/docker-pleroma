@@ -1,8 +1,11 @@
 FROM elixir:1.14-alpine
 
-ARG PLEROMA_VER=develop
-ARG UID=911
-ARG GID=911
+# Source code location
+LABEL org.opencontainers.image.source="https://github.com/molnia1311/docker-pleroma"
+
+ARG PLEROMA_VER
+ARG UID=1000
+ARG GID=1000
 
 ENV MIX_ENV=prod
 ENV VIX_COMPILATION_MODE=PLATFORM_PROVIDED_LIBVIPS
@@ -26,7 +29,7 @@ RUN mkdir -p /etc/pleroma \
 USER pleroma
 WORKDIR /pleroma
 
-RUN git clone -b develop https://git.pleroma.social/pleroma/pleroma.git /pleroma \
+RUN git clone -b ${PLEROMA_VER} https://git.pleroma.social/pleroma/pleroma.git /pleroma \
     && git checkout ${PLEROMA_VER}
 
 RUN echo "import Mix.Config" > config/prod.secret.exs \
